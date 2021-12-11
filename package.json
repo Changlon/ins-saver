@@ -1,0 +1,17 @@
+{
+  "name": "ins-saver",
+  "version": "1.0.0",
+  "description": "Give me an instagram link to return the JSON data for your related resources",
+  "main": "index.js",
+  "repository": "git@github.com:Changlon/ins-saver.git",
+  "author": "Changlon <changlong.a2@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "async": "^3.2.2",
+    "cheerio": "^1.0.0-rc.10",
+    "cli-color": "^2.0.1",
+    "lodash": "^4.17.21",
+    "request": "^2.88.2",
+    "useragent-from-seed": "^1.0.1"
+  }
+}
