@@ -1,7 +1,7 @@
 
 
 import  Event from 'events'
-import { type } from 'os'
+
 
  
 //请求链接的类型
