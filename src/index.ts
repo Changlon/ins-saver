@@ -3,9 +3,9 @@ import InsKeeper,{InsJsonDataType} from '../typings'
 
 
 import event from 'events' 
+import { InsLinkType } from 'enum'
 
 console.log(event.EventEmitter)
-
 
 let d :InsJsonDataType = {
     id: 0,

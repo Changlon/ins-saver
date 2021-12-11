@@ -1,20 +1,10 @@
 
 
+import { InsLinkType } from 'enum'
 import  Event from 'events'
 
 
- 
-//请求链接的类型
-declare enum InsLinkType { 
-    POST = "post",
-    IG = "ig" 
-}
-    
-
-
-
 declare class InsKeeper {  
-
 
     private config:InsKeeper.InsKeeperConfig 
     private loop : {}
@@ -106,12 +96,7 @@ declare namespace InsKeeper {
         fullpath?:string,
         size?:number,
     }
-    
-   
 
-
-    
- 
 
 }
 
