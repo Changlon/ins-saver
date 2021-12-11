@@ -1,9 +1,10 @@
+import exp from "constants"
 import { InsLinkType } from "enum"
 import { InsJsonDataType } from "."
-import Loop from "./loop" 
+import {Loop} from "./loop" 
 
 
-declare class Parser  { 
+export class Parser  { 
     
 
     private loop : Loop 
@@ -31,4 +32,3 @@ declare class Parser  {
 
 
 
-export = Parser

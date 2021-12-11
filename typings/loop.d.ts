@@ -2,7 +2,7 @@
 import  Event from 'events'
 import { InsKeeperConfig } from '.' 
 
-declare class Loop {
+ export class Loop {
 
     private config :InsKeeperConfig 
     private event :Event.EventEmitter 
@@ -20,7 +20,7 @@ declare class Loop {
 
 }
 
-export = Loop 
+
 
 
 

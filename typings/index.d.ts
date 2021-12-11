@@ -6,25 +6,15 @@ import  Event from 'events'
 
 declare class InsKeeper {  
 
-    private config:InsKeeper.InsKeeperConfig 
-    private loop : {}
-    private parser: {} 
-    private event : Event.EventEmitter 
-    private ready :boolean 
-    private queue:InsKeeper.QueueType[] 
-
-    
     constructor(config:InsKeeper.InsKeeperConfig )  
 
     init(config:InsKeeper.InsKeeperConfig ):Promise<any> 
 
-    regiteEvent():void  
-
-    analysis(urlOrCode:string,handleDataCallback:(json:InsKeeper.InsJsonDataType)=>Promise<any>,type:InsLinkType): InsKeeper   
+    analysis(urlOrCode:string,type:InsLinkType,handleDataCallback?:(json:InsKeeper.InsJsonDataType)=>Promise<any>): InsKeeper   
     
-    analysisPost(urlOrCode:string,handleDataCallback:(json:InsKeeper.InsJsonDataType)=>Promise<any>): InsKeeper
+    analysisPost(urlOrCode:string,handleDataCallback?:(json:InsKeeper.InsJsonDataType)=>Promise<any>): InsKeeper
 
-    analysisIg(urlOrCode:string,handleDataCallback:(json:InsKeeper.InsJsonDataType)=>Promise<any>): InsKeeper  
+    analysisIg(urlOrCode:string,handleDataCallback?:(json:InsKeeper.InsJsonDataType)=>Promise<any>): InsKeeper  
 
     download(url:string,filename?:string):Promise<InsKeeper.downloadFileType>  
     
@@ -37,10 +27,11 @@ declare namespace InsKeeper {
     
         getCookie: ()=> Promise<CookieType[]> ,
         downloadPath:string,  
-        outCookie?: ()=> Promise<CookieType> | CookieType ,
+        outCookie?: (cookie:InsKeeper.CookieType)=> any ,
         proxy?:string,   
         switchCookieInterval?:number 
         useCookieMaxNum?:number,
+        cookies?:CookieType[] 
         
     }
 
@@ -56,7 +47,7 @@ declare namespace InsKeeper {
         type:InsLinkType,
         code:string,
         url:string,
-        callback:(json:InsKeeper.InsJsonDataType)=>Promise<any>
+        callback?:(json:InsKeeper.InsJsonDataType)=>Promise<any>
     }
 
 
@@ -90,7 +81,6 @@ declare namespace InsKeeper {
         status: "ok" | "error", 
         createtime:Date 
         error?:Error,
-        type ? : "video" | "image",  
         filename?:string,
         filepath?:string,
         fullpath?:string,
