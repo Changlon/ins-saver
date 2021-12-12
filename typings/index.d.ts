@@ -1,7 +1,6 @@
 
 
-import { InsLinkType } from 'enum'
-import  Event from 'events'
+import { InsLinkType } from '../src/enum/enum.handler'
 
 
 declare class InsKeeper {  

@@ -1,16 +1,18 @@
-import { EventHandlerType, InsLinkType } from "enum"
-import InsKeeper, { InsKeeperConfig,CookieType,InsJsonDataType, QueueType, downloadFileType } from "../typings" 
-import  Event  from 'events'
-import {Loop} from "loop"
-import {Parser} from "parser"
 import request from 'request' 
 import fs from 'fs'
+import InsKeeper, { InsKeeperConfig,CookieType,InsJsonDataType, QueueType, downloadFileType } from "../typings" 
+import  Event  from 'events'
+import {createUrl,createTvUrl,getShortCode} from './utils/url' 
+import Looper from './helper/Looper'
+import  Parser  from './helper/Parser'
+import { EventHandlerType, InsLinkType } from './enum/enum.handler'
+
 
 
 class InsSaver implements InsKeeper {
     
     private config:InsKeeper.InsKeeperConfig 
-    private loop : Loop
+    private loop : Looper
     private parser: Parser
     private event : Event.EventEmitter 
     private ready :boolean 
@@ -72,9 +74,9 @@ class InsSaver implements InsKeeper {
     analysis(urlOrCode: string, type: InsLinkType, handleDataCallback?: (json: InsKeeper.InsJsonDataType) => Promise<any>): InsKeeper {
         const task:QueueType = {
             type,
-            code: getCode(urlOrCode), 
-            url: type === InsLinkType.POST ? createPost(urlOrCode) :
-                 type === InsLinkType.IG ?  createIg(urlOrCode):urlOrCode ,
+            code: getShortCode(urlOrCode), 
+            url: type === InsLinkType.POST ? createUrl(urlOrCode) :
+                 type === InsLinkType.IG ?  createTvUrl(urlOrCode):urlOrCode ,
             callback: handleDataCallback
                 
         }
@@ -94,7 +96,7 @@ class InsSaver implements InsKeeper {
         
         const this_ = this 
         
-        return new Promise((r,j)=>{ 
+        return new Promise(r=>{ 
          
             if(!url) {
                 let r_:downloadFileType = {
@@ -119,7 +121,7 @@ class InsSaver implements InsKeeper {
             })
             .pipe(fs.createWriteStream(fullpath))
             .on('close', () => {
-                if(fs.existsSync(fullpath)) {
+                if(fs.existsSync(fullpath) && fs.statSync(fullpath).size) {
                     r( {
                         status:"ok",
                         createtime:new Date(),

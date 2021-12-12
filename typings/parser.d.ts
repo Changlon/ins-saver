@@ -1,13 +1,9 @@
-import exp from "constants"
-import { InsLinkType } from "enum"
+import { InsLinkType } from "../src/enum/enum.handler"
 import { InsJsonDataType } from "."
 import {Loop} from "./loop" 
 
 
 export class Parser  { 
-    
-
-    private loop : Loop 
     
     constructor(loop:Loop)   
 
@@ -16,15 +12,7 @@ export class Parser  {
     parsePost(url:string):Promise<InsJsonDataType> 
 
     parseIg(url:string):Promise<InsJsonDataType> 
-
-    
-    /**
-     * TODO : 链接parser后面可能有主页的，等等
-     * @param json 
-     */
-    private linkJsonParser(json:{[k:string|number|symbol]:any}) :InsJsonDataType  
-    
-    
+ 
 }
 
 
