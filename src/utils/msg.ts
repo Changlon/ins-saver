@@ -21,22 +21,9 @@ export const title = (msg:string,color?:string,indent ?: number) =>{
         console.log("")
 }
 
-export const log = (o:object,tit?:string) =>{ 
-    if(tit) title(tit) 
+export const log = (o:object,tit?:string,color?:string,indent ? : number) =>{ 
+    if(tit) title(tit,color,indent) 
     Object.keys(o).forEach(k=>{
         info(`${k} --> ${o[k]}`)
     })
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

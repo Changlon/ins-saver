@@ -8,7 +8,7 @@ import  Parser  from './helper/Parser'
 import { EventHandlerType, InsLinkType } from './enum/enum.handler'
 import * as msg from './utils/msg' 
 
-const { warn } = msg
+const { warn ,log } = msg
 
 class InsSaver implements InsKeeper {
 
@@ -34,16 +34,16 @@ class InsSaver implements InsKeeper {
         this.event = new Event.EventEmitter() 
         this.queue = []         
         this.regiteEvent() 
-        this.loop = new Looper(config,this.event) 
+        this.loop = new Looper(this.config,this.event) 
         this.parser = new Parser(this.loop) 
-        this.config.cookies.length > 0 ? (this.ready = true && this.event.emit(EventHandlerType.HANDLE_QUEUE)) : void 0  
+        this.config.cookies.length > 0 ? (this.ready = true && this.event.emit(EventHandlerType.HANDLE_QUEUE)) : warn("getCookie 获取到0个cookie, 请编写能正确返回cookie的异步函数！") 
     }
 
 
     private regiteEvent(): void {  
         const this_ = this 
         this_.event.on(EventHandlerType.HANDLE_QUEUE,async ()=>{  
-            while(this_.queue.length > 0) {
+            while(this_.queue.length > 0 && this_.ready) {
                 const task = this_.queue.shift()
                 const callback = task.callback || (async (json:InsJsonDataType)=>{})
                 let json:InsJsonDataType 
@@ -64,7 +64,7 @@ class InsSaver implements InsKeeper {
                 }
             } 
         })
-        this_.event.on(EventHandlerType.HANDLE_OUT_COOKIE,async (cookie:CookieType)=>{await this_.config.outCookie(cookie)}) 
+        this_.event.on(EventHandlerType.HANDLE_OUT_COOKIE,async (cookie:CookieType)=>{this_.config.outCookie(cookie)}) 
     }
 
     analysis(urlOrCode: string, type: InsLinkType, handleDataCallback?: (json: InsKeeper.InsJsonDataType) => Promise<any>): InsKeeper {
@@ -91,7 +91,6 @@ class InsSaver implements InsKeeper {
     download(url: string, filename?: string): Promise<InsKeeper.downloadFileType> {
         const this_ = this 
         return new Promise(r=>{ 
-         
             if(!url) {
                 let r_:downloadFileType = {
                     status: "error",
@@ -115,28 +114,39 @@ class InsSaver implements InsKeeper {
             .pipe(fs.createWriteStream(fullpath))
             .on('close', () => {
                 if(fs.existsSync(fullpath) && fs.statSync(fullpath).size) {
-                    r( {
+                    const resolved:downloadFileType = {
                         status:"ok",
                         createtime:new Date(),
                         filename:`${filename}${afterfix}`,
                         filepath:this_.config.downloadPath,
                         fullpath,
                         size:fs.statSync(fullpath).size 
-                    } as downloadFileType)
+                    } 
+
+                    r(resolved)  
+
+                    log(resolved,"InsSaver Download Sucess!","yellow")
+
                 }else{
-                    r( {
+
+                    const rejected :downloadFileType = {
                         status:"error",
                         createtime:new Date(),
                         error : new Error(`文件下载失败!`)
-                    } as downloadFileType)
+                    }
+                    r( rejected)
+                    warn(`insSaver downloadFile failed! errInfo : ${rejected}`)
                 }
             })
             .on('err',err=>{ 
-                r({ 
+
+                const erred : downloadFileType = {
                     status:"error",
                     createtime: new Date(),
                     error:new Error(err)     
-                } as downloadFileType)
+                }
+                r(erred)
+                warn(`insSaver downloadFile failed! errInfo : ${erred}`)
             })
         })
     }
