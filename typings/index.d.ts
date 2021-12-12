@@ -69,7 +69,8 @@ declare namespace InsKeeper {
             display_url:string,
             url:string,
             is_video:boolean,
-            type:string
+            type:string,
+            typename:string
         }[]
         
     }

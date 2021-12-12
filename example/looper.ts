@@ -16,11 +16,18 @@ const config :InsKeeperConfig = {
     proxy:"http://127.0.0.1:1080"
 }
 
-new Looper(config,new Event.EventEmitter())
-.getJsonData("https://www.instagram.com/p/CWmVITVvM0r/?__a=1")  
-.then(r=>{
-    console.log(r)
-})
-.catch(e=>{
+try {
+    new Looper(config,new Event.EventEmitter())
+    .getJsonData("https://www.instagram.com/p/CWmVITVvM0R/?__a=1")  
+    .then(r=>{
+        console.log(r)
+    })
+    .catch(e=>{
+        console.log(e)
+    })
+}catch(e) {
     console.log(e)
-})
+
+}
+
+
