@@ -6,18 +6,17 @@ import {createUrl,createTvUrl,getShortCode} from './utils/url'
 import Looper from './helper/Looper'
 import  Parser  from './helper/Parser'
 import { EventHandlerType, InsLinkType } from './enum/enum.handler'
-
+import * as msg from './utils/msg' 
 
 
 class InsSaver implements InsKeeper {
-    
     private config:InsKeeper.InsKeeperConfig 
     private loop : Looper
     private parser: Parser
     private event : Event.EventEmitter 
     private ready :boolean 
     private queue:InsKeeper.QueueType[] 
-
+    static msg: typeof msg
 
     constructor(config:InsKeeperConfig) {  
         this.init(config)
@@ -158,6 +157,10 @@ let config:InsKeeperConfig = {
 } 
 
 
-export = InsSaver
+InsSaver.msg = msg 
+export = InsSaver 
 
+
+
+ 
 

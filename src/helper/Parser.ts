@@ -1,9 +1,8 @@
 
-// import { InsLinkType } from 'enum';
 import { Parser as ParserInterface } from 'parser' 
-import { InsLinkType } from '../enum/enum.handler';
+import { InsLinkType } from '../enum/enum.handler'
 import { InsJsonDataType } from '../../typings'
-import Looper from './Looper';
+import Looper from './Looper'
 
 class Parser implements ParserInterface { 
 
