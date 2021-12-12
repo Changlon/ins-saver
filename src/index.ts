@@ -8,8 +8,10 @@ import  Parser  from './helper/Parser'
 import { EventHandlerType, InsLinkType } from './enum/enum.handler'
 import * as msg from './utils/msg' 
 
+const { warn } = msg
 
 class InsSaver implements InsKeeper {
+
     private config:InsKeeper.InsKeeperConfig 
     private loop : Looper
     private parser: Parser
@@ -32,43 +34,38 @@ class InsSaver implements InsKeeper {
         this.event = new Event.EventEmitter() 
         this.queue = []         
         this.regiteEvent() 
-         //TODO 完成Loop ,Parser类
-        // this.loop = {} 
-        // this.parser = {} 
+        this.loop = new Looper(config,this.event) 
+        this.parser = new Parser(this.loop) 
         this.config.cookies.length > 0 ? (this.ready = true && this.event.emit(EventHandlerType.HANDLE_QUEUE)) : void 0  
-        
     }
 
-  
+
     private regiteEvent(): void {  
-
         const this_ = this 
-
         this_.event.on(EventHandlerType.HANDLE_QUEUE,async ()=>{  
             while(this_.queue.length > 0) {
                 const task = this_.queue.shift()
                 const callback = task.callback || (async (json:InsJsonDataType)=>{})
                 let json:InsJsonDataType 
-                switch (task.type) { 
-                    case InsLinkType.POST: 
-                        json = await this_.parser.parsePost(task.url)  
-                        break 
-                    case InsLinkType.IG: 
-                        json = await this_.parser.parseIg(task.url) 
-                        break
-                     default:
-                         break   
+                try {
+                    switch (task.type) { 
+                        case InsLinkType.POST: 
+                            json = await this_.parser.parsePost(task.url)  
+                            break 
+                        case InsLinkType.IG: 
+                            json = await this_.parser.parseIg(task.url) 
+                            break
+                         default:
+                             break   
+                    }
+                    callback(json)   
+                }catch(e) { 
+                    warn(e)
                 }
-                callback(json)  
             } 
-            
         })
-        
         this_.event.on(EventHandlerType.HANDLE_OUT_COOKIE,async (cookie:CookieType)=>{await this_.config.outCookie(cookie)}) 
-        
     }
-
-
 
     analysis(urlOrCode: string, type: InsLinkType, handleDataCallback?: (json: InsKeeper.InsJsonDataType) => Promise<any>): InsKeeper {
         const task:QueueType = {
@@ -77,11 +74,11 @@ class InsSaver implements InsKeeper {
             url: type === InsLinkType.POST ? createUrl(urlOrCode) :
                  type === InsLinkType.IG ?  createTvUrl(urlOrCode):urlOrCode ,
             callback: handleDataCallback
-                
         }
         this.queue.push(task) 
         return this.ready ?  (this.event.emit(EventHandlerType.HANDLE_QUEUE) && this) : this  
     }
+
 
     analysisPost(urlOrCode: string, handleDataCallback: (json: InsKeeper.InsJsonDataType) => Promise<any>): InsKeeper {
        return this.analysis(urlOrCode,InsLinkType.POST,handleDataCallback) 
@@ -92,9 +89,7 @@ class InsSaver implements InsKeeper {
     }
 
     download(url: string, filename?: string): Promise<InsKeeper.downloadFileType> {
-        
         const this_ = this 
-        
         return new Promise(r=>{ 
          
             if(!url) {
@@ -102,7 +97,6 @@ class InsSaver implements InsKeeper {
                     status: "error",
                     createtime: new Date(),
                     error : new Error(`url : ${url} is required!`) ,
-                    
                 } 
                 return r(r_)
             }
@@ -146,18 +140,11 @@ class InsSaver implements InsKeeper {
             })
         })
     }
-    
-} 
-
-let config:InsKeeperConfig = {
-    getCookie: function (): Promise<CookieType[]> {
-        throw new Error("Function not implemented.")
-    },
-    downloadPath: ""
 } 
 
 
 InsSaver.msg = msg 
+
 export = InsSaver 
 
 
