@@ -6,8 +6,8 @@
   "repository": "git@github.com:Changlon/ins-saver.git",
   "author": "Changlon <changlong.a2@gmail.com>",
   "scripts": {
-    "build": " rd /s/q dist && yarn tsc",
-    "dev": "yarn ts-node ./src/index.ts"
+    "build": "rd /s/q dist && tsc",
+    "dev": "ts-node ./src/index.ts"
   },
   "typings": "typings/index.d.ts",
   "license": "MIT",

@@ -29,11 +29,11 @@ class InsSaver implements InsKeeper {
         config.switchCookieInterval = config.switchCookieInterval || (1000*60*10) 
         config.useCookieMaxNum = config.useCookieMaxNum || 24 
         config.outCookie = config.outCookie || (async cookie => {}) 
-        config.cookies = config.cookies || (await config.getCookie())
-        this.config = config  
         this.event = new Event.EventEmitter() 
-        this.queue = []         
+        this.queue = []        
         this.regiteEvent() 
+        this.config = config  
+        config.cookies = config.cookies || (await config.getCookie())
         this.loop = new Looper(this.config,this.event) 
         this.parser = new Parser(this.loop) 
         this.config.cookies.length > 0 ? (this.ready = true && this.event.emit(EventHandlerType.HANDLE_QUEUE)) : warn("getCookie 获取到0个cookie, 请编写能正确返回cookie的异步函数！") 
@@ -94,6 +94,7 @@ class InsSaver implements InsKeeper {
             if(!url) {
                 let r_:downloadFileType = {
                     status: "error",
+                    statusCode: -1 ,
                     createtime: new Date(),
                     error : new Error(`url : ${url} is required!`) ,
                 } 
@@ -102,46 +103,57 @@ class InsSaver implements InsKeeper {
             const afterfix = /.jpg/g.test(url) ? '.jpg' : 
                             /.mp4/g.test(url) ? '.mp4' : '' 
 
-            filename = filename || new Date().getTime().toString()
-            const fullpath = `${this_.config.downloadPath}${filename}${afterfix}`   
+            filename = filename || new Date().getTime().toString() 
             
-            if(!fs.existsSync(this_.config.downloadPath)) fs.mkdirSync(this_.config.downloadPath) 
+            const fullpath = `${this_.config.downloadPath}${filename}${afterfix}`   
+
+            
+            if(!fs.existsSync(this_.config.downloadPath)) fs.mkdirSync(this_.config.downloadPath)  
+            
+            let isExpiredUrl : boolean = false 
             
             request({
                 url,
                 proxy: this_.config.proxy, 
+            },(err,res,body)=>{
+                if(err) return r({
+                    status:"error",
+                    statusCode:res.statusCode,
+                    createtime: new Date(),
+                    error:new Error(err)     
+                })
+
+                //CHECK IF URL signature expired
+                if(res.statusCode === 403 && body === "URL signature expired") { 
+                    isExpiredUrl = true 
+                    r({
+                        status:"error",
+                        statusCode:403,
+                        createtime: new Date(),
+                        error:new Error(body)     
+                    })
+                }
             })
             .pipe(fs.createWriteStream(fullpath))
             .on('close', () => {
-                if(fs.existsSync(fullpath) && fs.statSync(fullpath).size) {
-                    const resolved:downloadFileType = {
-                        status:"ok",
-                        createtime:new Date(),
-                        filename:`${filename}${afterfix}`,
-                        filepath:this_.config.downloadPath,
-                        fullpath,
-                        size:fs.statSync(fullpath).size 
-                    } 
-
-                    r(resolved)  
-
-                    log(resolved,"InsSaver Download Sucess!","yellow")
-
-                }else{
-
-                    const rejected :downloadFileType = {
-                        status:"error",
-                        createtime:new Date(),
-                        error : new Error(`文件下载失败!`)
-                    }
-                    r( rejected)
-                    warn(`insSaver downloadFile failed! errInfo : ${rejected}`)
+                if(!isExpiredUrl && fs.existsSync(fullpath) && fs.statSync(fullpath).size > 21 ) {
+                        const resolved:downloadFileType = {
+                                            status:"ok",
+                                            statusCode : 200,
+                                            createtime:new Date(),
+                                            filename:`${filename}${afterfix}`,
+                                            filepath:this_.config.downloadPath,
+                                            fullpath,
+                                            size:fs.statSync(fullpath).size 
+                                        } 
+                        r(resolved)  
+                        log(resolved,"InsSaver Download Sucess!","yellow")
                 }
             })
             .on('err',err=>{ 
-
                 const erred : downloadFileType = {
                     status:"error",
+                    statusCode : -1 ,
                     createtime: new Date(),
                     error:new Error(err)     
                 }

@@ -79,12 +79,14 @@ declare namespace InsKeeper {
     //下载文件返回的类型
      type downloadFileType = { 
         status: "ok" | "error", 
+        statusCode: number,
         createtime:Date 
         error?:Error,
         filename?:string,
         filepath?:string,
         fullpath?:string,
         size?:number,
+        [k:string]:any
     }
 
 
