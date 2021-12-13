@@ -7,9 +7,9 @@
 export const createUrl = (urlOrCode : string ):string => {   
     return  urlOrCode ?  
         isUrl(urlOrCode) ?  
-            urlOrCode.substring(urlOrCode.length-1) === "/" ? 
-              urlOrCode + "?__a=1"
-                : urlOrCode + "/?__a=1"
+           createUrl((()=>{
+               return urlOrCode.split("/")[urlOrCode.split("/").length-2]
+           })())
         : `https://www.instagram.com/p/${urlOrCode}/?__a=1`
         
     : ""

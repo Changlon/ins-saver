@@ -36,14 +36,15 @@ class InsSaver implements InsKeeper {
         config.cookies = config.cookies || (await config.getCookie())
         this.loop = new Looper(this.config,this.event) 
         this.parser = new Parser(this.loop) 
-        this.config.cookies.length > 0 ? (this.ready = true && this.event.emit(EventHandlerType.HANDLE_QUEUE)) : warn("getCookie 获取到0个cookie, 请编写能正确返回cookie的异步函数！") 
+        this.config.cookies.length > 0 ? (this.ready = true , this.event.emit(EventHandlerType.HANDLE_QUEUE)) : warn("getCookie 获取到0个cookie, 请编写能正确返回cookie的异步函数！") 
     }
 
 
     private regiteEvent(): void {  
         const this_ = this 
-        this_.event.on(EventHandlerType.HANDLE_QUEUE,async ()=>{  
+        this_.event.on(EventHandlerType.HANDLE_QUEUE,async ()=>{   
             while(this_.queue.length > 0 && this_.ready) {
+
                 const task = this_.queue.shift()
                 const callback = task.callback || (async (json:InsJsonDataType)=>{})
                 let json:InsJsonDataType 

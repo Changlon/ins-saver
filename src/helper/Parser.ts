@@ -13,7 +13,7 @@ class Parser implements ParserInterface {
     }
 
     async parse(url: string, type: InsLinkType): Promise<InsJsonDataType> {   
-        let err = new Error(`Parser --- parserError return  body invalid type!`)
+        let err : unknown
         const body = await this.loop.getJsonData(url).catch(fail=>{ err = fail}) 
         if(err || !body ) throw err   
         let json:{[k:string|number|symbol]:any} 
@@ -47,6 +47,7 @@ class Parser implements ParserInterface {
      * @param json 
      */
      private linkJsonParser(json:{[k:string|number|symbol]:any}): InsJsonDataType{  
+            debugger
             const shortcode_media = json?.graphql?.shortcode_media  
             if(!shortcode_media) return  
             let insJsonData:InsJsonDataType 
@@ -58,7 +59,8 @@ class Parser implements ParserInterface {
             const list = [] 
             
             if(is_multiple) { 
-                for(let node of edge_sidecar_to_children.edges) { 
+                for(let node of edge_sidecar_to_children.edges) {  
+                    node = node.node 
                     const {id,shortcode,display_url,is_video,video_url} = node
                     list.push({
                         id,
