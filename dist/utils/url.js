@@ -9,9 +9,9 @@ exports.getShortCode = exports.isUrl = exports.createProfileUrl = exports.create
 const createUrl = (urlOrCode) => {
     return urlOrCode ?
         (0, exports.isUrl)(urlOrCode) ?
-            urlOrCode.substring(urlOrCode.length - 1) === "/" ?
-                urlOrCode + "?__a=1"
-                : urlOrCode + "/?__a=1"
+            (0, exports.createUrl)((() => {
+                return urlOrCode.split("/")[urlOrCode.split("/").length - 2];
+            })())
             : `https://www.instagram.com/p/${urlOrCode}/?__a=1`
         : "";
 };
@@ -66,3 +66,4 @@ const getShortCode = (url) => {
         : "";
 };
 exports.getShortCode = getShortCode;
+//# sourceMappingURL=url.js.map

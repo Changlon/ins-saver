@@ -15,7 +15,7 @@ class Parser {
     }
     parse(url, type) {
         return __awaiter(this, void 0, void 0, function* () {
-            let err = new Error(`Parser --- parserError return  body invalid type!`);
+            let err;
             const body = yield this.loop.getJsonData(url).catch(fail => { err = fail; });
             if (err || !body)
                 throw err;
@@ -54,6 +54,7 @@ class Parser {
     */
     linkJsonParser(json) {
         var _a, _b, _c, _d, _e;
+        debugger;
         const shortcode_media = (_a = json === null || json === void 0 ? void 0 : json.graphql) === null || _a === void 0 ? void 0 : _a.shortcode_media;
         if (!shortcode_media)
             return;
@@ -66,6 +67,7 @@ class Parser {
         const list = [];
         if (is_multiple) {
             for (let node of edge_sidecar_to_children.edges) {
+                node = node.node;
                 const { id, shortcode, display_url, is_video, video_url } = node;
                 list.push({
                     id,
@@ -107,3 +109,4 @@ class Parser {
     }
 }
 module.exports = Parser;
+//# sourceMappingURL=Parser.js.map

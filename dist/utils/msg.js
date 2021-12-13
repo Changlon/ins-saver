@@ -25,11 +25,12 @@ const title = (msg, color, indent) => {
     console_1.default.log("");
 };
 exports.title = title;
-const log = (o, tit) => {
+const log = (o, tit, color, indent) => {
     if (tit)
-        (0, exports.title)(tit);
+        (0, exports.title)(tit, color, indent);
     Object.keys(o).forEach(k => {
         (0, exports.info)(`${k} --> ${o[k]}`);
     });
 };
 exports.log = log;
+//# sourceMappingURL=msg.js.map

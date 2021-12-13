@@ -15,9 +15,9 @@ const config :InsKeeperConfig = {
 
 const saver = new InsSaver(config) 
 
-saver.analysisPost("https://www.instagram.com/p/CXDzvDrPQry/?utm_medium=copy_link",async (data)=>{ 
+saver.analysisPost("https://www.instagram.com/p/CXDzvDrPQry__/?utm_medium=copy_link",async (data)=>{ 
     console.log(data)
 }) 
-.analysisIg("https://www.instagram.com/tv/CXXh16UIGQL/?__a=1",async data =>{
+.analysisIg("https://www.instagram.com/tv/CXXh16UIGQL__/?__a=1",async data =>{
     console.log(data)
 })

@@ -14,6 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 const useragent_from_seed_1 = __importDefault(require("useragent-from-seed"));
 const request_1 = __importDefault(require("request"));
 const enum_handler_1 = require("../enum/enum.handler");
+const msg_1 = require("../utils/msg");
 class Looper {
     constructor(config, event) {
         this.currentCookieIndex = 0;
@@ -58,8 +59,7 @@ class Looper {
                     "Cookie": cookie
                 }
             };
-            // console.log(option) 
-            //INFO
+            (0, msg_1.log)(Object.assign(Object.assign({}, option), { usedNum, runningNum: this_.config.cookies.length, runningCookies: JSON.stringify(this_.config.cookies) }), "InsSaver Request Log!");
             return new Promise((r, j) => {
                 (0, request_1.default)(option, (err, res, body) => {
                     if (!err && body) {
@@ -126,17 +126,20 @@ class Looper {
         this.currentCookieIndex >= this.config.cookies.length ? this.currentCookieIndex = 0 : void 0;
         //CHECK COOKIES NUM 
         if (!this.config.cookies.length) {
-            //INFO 
+            (0, msg_1.info)("当前没有可用的cookie了，自动调用getCookie函数获取，请确保函数能返回正确的cookie数组");
             return this.add();
         }
-        //INFO   
+        const cookie = this.config.cookies[this.currentCookieIndex];
+        (0, msg_1.info)(`切换到第${this.currentCookieIndex}个cookie : ${JSON.stringify(cookie)}`);
+        (0, msg_1.info)(`当前运行的cookie数量: ${this.config.cookies.length}`);
     }
     //ADD THE COOKIES IF CONFIG.COOKIES IS ZERO 
     add() {
         return __awaiter(this, void 0, void 0, function* () {
             this.config.cookies = (yield this.config.getCookie());
-            //INFO 
+            (0, msg_1.info)(`自动添加获取到的cookies:${JSON.stringify(this.config.cookies)}`);
         });
     }
 }
 module.exports = Looper;
+//# sourceMappingURL=Looper.js.map
