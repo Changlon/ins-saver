@@ -4,6 +4,7 @@ import Event from 'events'
 import useragentFromSeed from 'useragent-from-seed' 
 import request from 'request'
 import { EventHandlerType } from "../enum/enum.handler"
+import {info,log,warn} from "../utils/msg" 
 
 class Looper implements Loop {
 
@@ -19,8 +20,6 @@ class Looper implements Loop {
         this.useNumMap = new Map() 
         this.startLoop() 
     }
-
-    
     
     checkCookie(isBad: boolean): void {  
         const cookie = this.config.cookies[this.currentCookieIndex]  
@@ -61,14 +60,17 @@ class Looper implements Loop {
             }
         }
 
-        // console.log(option) 
-        //INFO
-
+        log({
+            ...option,
+            usedNum,
+            runningNum:this_.config.cookies.length,
+            runningCookies: JSON.stringify(this_.config.cookies) 
+        },"InsSaver Request Log!")
+       
         return new Promise((r,j)=>{ 
             request(option,(err,res,body)=>{  
                 if( !err && body ) {   
                     switch (res.statusCode) { 
-
                         case 200:  
                             if((body as string).startsWith("<!DOCTYPE html>")) {
                                 j({
@@ -143,18 +145,20 @@ class Looper implements Loop {
 
         //CHECK COOKIES NUM 
         if(!this.config.cookies.length){ 
-            //INFO 
+            info("当前没有可用的cookie了，自动调用getCookie函数获取，请确保函数能返回正确的cookie数组")
             return this.add()
         }
 
-        //INFO   
+        const cookie =  this.config.cookies[this.currentCookieIndex]  
+        info(`切换到第${this.currentCookieIndex}个cookie : ${JSON.stringify(cookie)}`)  
+        info(`当前运行的cookie数量: ${this.config.cookies.length}`) 
         
     }
 
     //ADD THE COOKIES IF CONFIG.COOKIES IS ZERO 
     private async add() { 
         this.config.cookies = (await this.config.getCookie())  
-        //INFO 
+        info(`自动添加获取到的cookies:${JSON.stringify(this.config.cookies)}`) 
     }
     
 
