@@ -85,7 +85,7 @@ class Looper implements Loop {
                         case 404: 
 
                             j({
-                                status:res.statusCode,
+                                status:404,
                                 error: new Error(`未获取到资源 404!`)
                             })
                             break
@@ -93,7 +93,7 @@ class Looper implements Loop {
 
                 }else if(err) {
                     j({
-                        status:res.statusCode,
+                        status:res?.statusCode || 500,
                         error: new Error(`网络连接错误！ ${err}`)
                     })
                 }
