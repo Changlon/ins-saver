@@ -32,11 +32,13 @@ yarn add ins-saver
             * [.analysisIg(urlOrCode,handleDataCallback)](#module_ins-saver--InsSaver+analysisIg) ⇒ <code>InsSaver</code>
             * [.download(url,filename?)](#module_ins-saver-InsSaver+download) ⇒ <code>Promise<data:downloadFileType> </code>
         * _static_
-			*  _msg_ [Object]
-				* [.warn(msg)](#) ⇒ <code>void </code>
-				* [.info(msg)](#) ⇒ <code> void </code>
-				* [.title(msg,color?,indent?)](#) ⇒ <code> void </code>
-				* [.log(o,tit?,color?,indent ?)](#) ⇒ <code> void </code>
+          * [.warn(msg)](#) ⇒ <code>void </code>
+          * [.info(msg)](#) ⇒ <code> void </code>
+          * [.title(msg,color?,indent?)](#) ⇒ <code> void </code>
+          * [.log(o,tit?,color?,indent ?)](#) ⇒ <code> void </code>
+          * [.createUrl(urlOrCode)](#) ⇒ <code> string </code>
+          * [.createTvUrl(urlOrCode)](#) ⇒ <code> string </code>
+          * [.getShortCode(url)](#) ⇒ <code> string </code>
 					
 
 	            	

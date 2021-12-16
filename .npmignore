@@ -1,6 +1,8 @@
 src/
 .vscode/
 examples/
+resources/
+__test__/
 tsconfig.json
 yarn.lock
 
