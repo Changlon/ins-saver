@@ -6,9 +6,8 @@ import {createUrl,createTvUrl,getShortCode} from './utils/url'
 import Looper from './helper/Looper'
 import  Parser  from './helper/Parser'
 import { EventHandlerType, InsLinkType } from './enum/enum.handler'
-import * as msg from './utils/msg' 
+import { warn,info,log,title } from './utils/msg'
 
-const { warn ,log } = msg
 
 class InsSaver implements InsKeeper {
 
@@ -18,7 +17,14 @@ class InsSaver implements InsKeeper {
     private event : Event.EventEmitter 
     private ready :boolean 
     private queue:InsKeeper.QueueType[] 
-    static msg: typeof msg
+    static warn: (msg: string) => void
+    static info: (msg: string) => void
+    static title: (msg: string, color?: string, indent?: number) => void
+    static log: (o: object, tit?: string, color?: string, indent?: number) => void
+    static createUrl: (urlOrCode: string) => string
+    static createTvUrl: (urlOrCode: string) => string
+    static getShortCode: (url: string) => string
+    
 
     constructor(config:InsKeeperConfig) {  
         this.init(config)
@@ -166,8 +172,13 @@ class InsSaver implements InsKeeper {
 } 
 
 
-InsSaver.msg = msg 
-
+InsSaver.warn = warn 
+InsSaver.info = info 
+InsSaver.title = title
+InsSaver.log = log 
+InsSaver.createUrl = createUrl
+InsSaver.createTvUrl= createTvUrl 
+InsSaver.getShortCode = getShortCode
 export = InsSaver 
 
 

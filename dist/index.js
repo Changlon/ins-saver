@@ -1,23 +1,4 @@
 "use strict";
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -37,8 +18,7 @@ const url_1 = require("./utils/url");
 const Looper_1 = __importDefault(require("./helper/Looper"));
 const Parser_1 = __importDefault(require("./helper/Parser"));
 const enum_handler_1 = require("./enum/enum.handler");
-const msg = __importStar(require("./utils/msg"));
-const { warn, log } = msg;
+const msg_1 = require("./utils/msg");
 class InsSaver {
     constructor(config) {
         this.init(config);
@@ -56,7 +36,7 @@ class InsSaver {
             config.cookies = config.cookies || (yield config.getCookie());
             this.loop = new Looper_1.default(this.config, this.event);
             this.parser = new Parser_1.default(this.loop);
-            this.config.cookies.length > 0 ? (this.ready = true, this.event.emit(enum_handler_1.EventHandlerType.HANDLE_QUEUE)) : warn("getCookie 获取到0个cookie, 请编写能正确返回cookie的异步函数！");
+            this.config.cookies.length > 0 ? (this.ready = true, this.event.emit(enum_handler_1.EventHandlerType.HANDLE_QUEUE)) : (0, msg_1.warn)("getCookie 获取到0个cookie, 请编写能正确返回cookie的异步函数！");
         });
     }
     regiteEvent() {
@@ -80,7 +60,7 @@ class InsSaver {
                     callback(json);
                 }
                 catch (e) {
-                    warn(JSON.stringify(e));
+                    (0, msg_1.warn)(JSON.stringify(e));
                 }
             }
         }));
@@ -157,7 +137,7 @@ class InsSaver {
                         size: fs_1.default.statSync(fullpath).size
                     };
                     r(resolved);
-                    log(resolved, "InsSaver Download Sucess!", "yellow");
+                    (0, msg_1.log)(resolved, "InsSaver Download Sucess!", "yellow");
                 }
             })
                 .on('err', err => {
@@ -168,11 +148,17 @@ class InsSaver {
                     error: new Error(err)
                 };
                 r(erred);
-                warn(`insSaver downloadFile failed! errInfo : ${erred}`);
+                (0, msg_1.warn)(`insSaver downloadFile failed! errInfo : ${erred}`);
             });
         });
     }
 }
-InsSaver.msg = msg;
+InsSaver.warn = msg_1.warn;
+InsSaver.info = msg_1.info;
+InsSaver.title = msg_1.title;
+InsSaver.log = msg_1.log;
+InsSaver.createUrl = url_1.createUrl;
+InsSaver.createTvUrl = url_1.createTvUrl;
+InsSaver.getShortCode = url_1.getShortCode;
 module.exports = InsSaver;
 //# sourceMappingURL=index.js.map
