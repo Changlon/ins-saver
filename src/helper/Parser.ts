@@ -15,7 +15,7 @@ class Parser implements ParserInterface {
     async parse(url: string, type: InsLinkType): Promise<InsJsonDataType> {   
         let err : unknown
         const body = await this.loop.getJsonData(url).catch(fail=>{ err = fail}) 
-        if(err || !body ) throw err   
+        if(err || !body ) throw new Error(JSON.stringify(err))  
         let json:{[k:string|number|symbol]:any} 
         let insJsonData : InsJsonDataType 
         try {
