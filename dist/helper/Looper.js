@@ -77,7 +77,7 @@ class Looper {
                                 break;
                             case 404:
                                 j({
-                                    status: res.statusCode,
+                                    status: 404,
                                     error: new Error(`未获取到资源 404!`)
                                 });
                                 break;
@@ -85,7 +85,7 @@ class Looper {
                     }
                     else if (err) {
                         j({
-                            status: res.statusCode,
+                            status: (res === null || res === void 0 ? void 0 : res.statusCode) || 500,
                             error: new Error(`网络连接错误！ ${err}`)
                         });
                     }

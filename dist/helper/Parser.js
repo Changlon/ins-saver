@@ -18,7 +18,7 @@ class Parser {
             let err;
             const body = yield this.loop.getJsonData(url).catch(fail => { err = fail; });
             if (err || !body)
-                throw new Error(JSON.stringify(err));
+                throw err;
             let json;
             let insJsonData;
             try {

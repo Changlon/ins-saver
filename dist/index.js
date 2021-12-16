@@ -60,7 +60,7 @@ class InsSaver {
                     callback(json);
                 }
                 catch (e) {
-                    (0, msg_1.warn)(JSON.stringify(e));
+                    console.log(e);
                 }
             }
         }));
