@@ -77,7 +77,7 @@ var config = {
     switchCookieInterval:1000 * 60,
     proxy:"http://127.0.0.1:1080" // if use proxy
 }
-var saver = new InsSaver();
+var saver = new InsSaver(config);
 //return the json data related to the link
 saver.analysisPost("https://www.instagram.com/p/CXDzvDrPQry__/?utm_medium=copy_link",async (data)=>{ 
    	// handle the json data
