@@ -15,7 +15,10 @@ class Parser implements ParserInterface {
     async parse(url: string, type: InsLinkType): Promise<InsJsonDataType> {   
         let err : unknown
         const body = await this.loop.getJsonData(url).catch(fail=>{ err = fail}) 
-        if(err || !body ) throw err  
+        if(err || !body ) { 
+            this.loop.checkCookie(true) //remove the bad cookie!
+            throw err  
+        } 
         let json:{[k:string|number|symbol]:any} 
         let insJsonData : InsJsonDataType 
         try {

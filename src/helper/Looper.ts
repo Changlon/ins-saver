@@ -70,6 +70,7 @@ class Looper implements Loop {
         return new Promise((r,j)=>{ 
             request(option,(err,res,body)=>{  
                 if( !err && body ) {   
+                    this_.checkCookie(false)
                     switch (res.statusCode) { 
                         case 200:  
                             if((body as string).startsWith("<!DOCTYPE html>")) {
