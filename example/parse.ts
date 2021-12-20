@@ -4,7 +4,7 @@ import InsSaver from '../src'
 const config :InsKeeperConfig = {
     getCookie:async function (): Promise<CookieType[]> {
        return [
-          "csrftoken=hxGbDuBHR4nM2C0cVVHrsDT4pDfnGXMy;rur=ATN;ds_user_id=48888644144;sessionid=48888644144%3AATiVVxHTkAI8Dx%3A3"
+          "csrftoken=Kcrhd1oKyb7vMo9fLtoevYDTFGUxI9HU;rur=PRN;ds_user_id=50964005995;sessionid=50964005995%3AM1lalwmPzDDchM%3A27"
        ]
     },
     downloadPath: "D:\\CodeFiles\\workplace\\ins\\ins-saver\\resources\\",

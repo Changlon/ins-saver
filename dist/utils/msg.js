@@ -29,7 +29,7 @@ const log = (o, tit, color, indent) => {
     if (tit)
         (0, exports.title)(tit, color, indent);
     Object.keys(o).forEach(k => {
-        (0, exports.info)(`${k} --> ${o[k]}`);
+        (0, exports.info)(`${k} --> ${typeof o[k] === 'object' ? JSON.stringify(o[k]) : o[k]}`);
     });
 };
 exports.log = log;

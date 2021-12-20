@@ -24,6 +24,6 @@ export const title = (msg:string,color?:string,indent ?: number) =>{
 export const log = (o:object,tit?:string,color?:string,indent ? : number) =>{ 
     if(tit) title(tit,color,indent) 
     Object.keys(o).forEach(k=>{
-        info(`${k} --> ${o[k]}`)
+        info(`${k} --> ${typeof o[k] === 'object' ? JSON.stringify(o[k]): o[k]}`)
     })
 }
