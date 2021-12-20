@@ -109,7 +109,7 @@ class InsSaver {
                 if (err)
                     return r({
                         status: "error",
-                        statusCode: res.statusCode,
+                        statusCode: 500,
                         createtime: new Date(),
                         error: new Error(err)
                     });

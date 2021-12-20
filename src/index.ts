@@ -125,7 +125,7 @@ class InsSaver implements InsKeeper {
             },(err,res,body)=>{
                 if(err) return r({
                     status:"error",
-                    statusCode:res.statusCode,
+                    statusCode: 500,
                     createtime: new Date(),
                     error:new Error(err)     
                 })

@@ -63,6 +63,7 @@ class Looper {
             return new Promise((r, j) => {
                 (0, request_1.default)(option, (err, res, body) => {
                     if (!err && body) {
+                        this_.checkCookie(false);
                         switch (res.statusCode) {
                             case 200:
                                 if (body.startsWith("<!DOCTYPE html>")) {
