@@ -75,7 +75,7 @@ class Looper implements Loop {
                         case 200:  
                             if((body as string).startsWith("<!DOCTYPE html>")) {
                                 j({
-                                    status:res.statusCode,
+                                    status:200,
                                     error: new Error(`cookie无效！`)
                                 })
                             }else{

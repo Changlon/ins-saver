@@ -17,8 +17,9 @@ class Parser {
         return __awaiter(this, void 0, void 0, function* () {
             let err;
             const body = yield this.loop.getJsonData(url).catch(fail => { err = fail; });
-            if (err || !body) {
-                this.loop.checkCookie(true); //remove the bad cookie!
+            if (err) {
+                if (err.status == 200 && !body)
+                    this.loop.checkCookie(true); //remove the bad cookie!
                 throw err;
             }
             let json;

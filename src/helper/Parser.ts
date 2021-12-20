@@ -15,14 +15,15 @@ class Parser implements ParserInterface {
     async parse(url: string, type: InsLinkType): Promise<InsJsonDataType> {   
         let err : unknown
         const body = await this.loop.getJsonData(url).catch(fail=>{ err = fail}) 
-        if(err || !body ) { 
+        if(err) {  
+            if((err as any).status == 200 && !body)
             this.loop.checkCookie(true) //remove the bad cookie!
             throw err  
         } 
         let json:{[k:string|number|symbol]:any} 
         let insJsonData : InsJsonDataType 
         try {
-            json = JSON.parse(body)
+            json = JSON.parse(body as string)
             switch (type) {
                 case InsLinkType.POST:
                     insJsonData = this.linkJsonParser(json)

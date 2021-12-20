@@ -68,7 +68,7 @@ class Looper {
                             case 200:
                                 if (body.startsWith("<!DOCTYPE html>")) {
                                     j({
-                                        status: res.statusCode,
+                                        status: 200,
                                         error: new Error(`cookie无效！`)
                                     });
                                 }
