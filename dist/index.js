@@ -61,6 +61,7 @@ class InsSaver {
                 }
                 catch (e) {
                     console.log(e);
+                    throw e;
                 }
             }
         }));

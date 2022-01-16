@@ -68,6 +68,7 @@ class InsSaver implements InsKeeper {
                     callback(json)   
                 }catch(e) { 
                   console.log(e)
+                  throw e
                 }
             } 
         })

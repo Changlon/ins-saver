@@ -49,8 +49,9 @@ class Looper implements Loop {
 
     async getJsonData(url: string): Promise<string> {   
         const this_ = this
-        const {userAgent,usedNum,cookie} = this.getHeaders()  
+        const {userAgent,usedNum,cookie,key} = this.getHeaders()  
         const option = { 
+            username:key, 
             url,
             method:'GET',
             proxy: this_.config.proxy,
@@ -59,12 +60,12 @@ class Looper implements Loop {
                 "Cookie":cookie
             }
         }
-
+        
         log({
             ...option,
             usedNum,
             runningNum:this_.config.cookies.length,
-            runningCookies: JSON.stringify(this_.config.cookies) 
+            // runningCookies: JSON.stringify(this_.config.cookies) 
         },"InsSaver Request Log!")
        
         return new Promise((r,j)=>{ 
@@ -105,7 +106,8 @@ class Looper implements Loop {
     private getHeaders():{
         userAgent:string,
         cookie:string,
-        usedNum:number
+        usedNum:number,
+        key:string
 
     }{
         let userAgent :string,cookie:string,usedNum:number   
@@ -117,6 +119,7 @@ class Looper implements Loop {
         return {
             userAgent,
             cookie,
+            key,
             usedNum
         }
     }

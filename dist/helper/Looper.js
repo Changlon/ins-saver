@@ -49,8 +49,9 @@ class Looper {
     getJsonData(url) {
         return __awaiter(this, void 0, void 0, function* () {
             const this_ = this;
-            const { userAgent, usedNum, cookie } = this.getHeaders();
+            const { userAgent, usedNum, cookie, key } = this.getHeaders();
             const option = {
+                username: key,
                 url,
                 method: 'GET',
                 proxy: this_.config.proxy,
@@ -59,7 +60,7 @@ class Looper {
                     "Cookie": cookie
                 }
             };
-            (0, msg_1.log)(Object.assign(Object.assign({}, option), { usedNum, runningNum: this_.config.cookies.length, runningCookies: JSON.stringify(this_.config.cookies) }), "InsSaver Request Log!");
+            (0, msg_1.log)(Object.assign(Object.assign({}, option), { usedNum, runningNum: this_.config.cookies.length }), "InsSaver Request Log!");
             return new Promise((r, j) => {
                 (0, request_1.default)(option, (err, res, body) => {
                     if (!err && body) {
@@ -104,6 +105,7 @@ class Looper {
         return {
             userAgent,
             cookie,
+            key,
             usedNum
         };
     }
