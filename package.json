@@ -1,6 +1,6 @@
 {
   "name": "ins-saver",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "Give me an instagram link to return the JSON data for your related resources",
   "main": "./dist/index.js",
   "repository": "git@github.com:Changlon/ins-saver.git",
