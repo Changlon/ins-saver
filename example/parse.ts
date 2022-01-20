@@ -4,20 +4,17 @@ import InsSaver from '../src'
 const config :InsKeeperConfig = {
     getCookie:async function (): Promise<CookieType[]> {
        return [
-          "csrftoken=Kcrhd1oKyb7vMo9fLtoevYDTFGUxI9HU;rur=PRN;ds_user_id=50964005995;sessionid=50964005995%3AM1lalwmPzDDchM%3A27"
+          "csrftoken=F1eFKC9tBNdinM1zB24XNNDT6tEClXux;mid=YYhmrwABAAGAA-s9TgLGt-twGPUA;ig_nrcb=1;rur=FRC,51080639397,1674124552:01f7a64e7d59f7bed18d336c2243e8a4c7e7e5c23613a4ed6a4bc0757a96c5f886cfd1cc;ds_user_id=51080639397;ig_did=7B5C1854-44F1-4EB5-A011-49D76053C8CE;sessionid=51080639397%3AsXo81EOkFJ1w9e%3A1;"
        ]
     },
     downloadPath: "D:\\CodeFiles\\workplace\\ins\\ins-saver\\resources\\",
     switchCookieInterval:1000 * 60,
-    proxy:"http://127.0.0.1:1080"
+    proxy:"http://127.0.0.1:1080" 
 }
 
 
 const saver = new InsSaver(config) 
 
-saver.analysisPost("http://www.instagram.com/p/CXDzvDrPQry/?utm_medium=copy_link",async (data)=>{ 
+saver.analysisPost("https://www.instagram.com/p/CW0l-MRJEbr/?utm_medium=copy_link",async (data)=>{ 
     console.log(data)
 }) 
-.analysisIg("https://www.instagram.com/tv/CXXh16UIGQL__/?__a=1",async data =>{
-    console.log(data)
-})
