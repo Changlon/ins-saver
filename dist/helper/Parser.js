@@ -56,7 +56,7 @@ class Parser {
     * @param json
     */
     linkJsonParser(json) {
-        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
         const shortcode_media = (_a = json === null || json === void 0 ? void 0 : json.graphql) === null || _a === void 0 ? void 0 : _a.shortcode_media;
         const items = json === null || json === void 0 ? void 0 : json.items[0];
         if (!shortcode_media && !items)
@@ -115,16 +115,44 @@ class Parser {
             const { id, code, caption, user, carousel_media } = items;
             const is_multiple = (carousel_media === null || carousel_media === void 0 ? void 0 : carousel_media.length) > 1;
             const list = [];
-            for (let eachCm of carousel_media) {
-                const { id, media_type, image_versions2, video_versions } = eachCm;
+            if (is_multiple) {
+                for (let eachCm of carousel_media) {
+                    const { id, media_type, image_versions2, video_versions } = eachCm;
+                    switch (media_type) {
+                        case 1: //image  
+                            list.push({
+                                id,
+                                shortcode: code,
+                                display_url: (_f = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _f === void 0 ? void 0 : _f.url,
+                                is_video: false,
+                                url: (_g = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _g === void 0 ? void 0 : _g.url,
+                                type: "jpg",
+                                typename: "image"
+                            });
+                            break;
+                        case 2: //video 
+                            list.push({
+                                id, shortcode: code,
+                                display_url: (_h = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _h === void 0 ? void 0 : _h.url,
+                                is_video: true,
+                                url: (_j = video_versions[0]) === null || _j === void 0 ? void 0 : _j.url,
+                                type: "mp4",
+                                typename: "video"
+                            });
+                            break;
+                    }
+                }
+            }
+            else {
+                const { image_versions2, video_versions, media_type } = items;
                 switch (media_type) {
                     case 1: //image  
                         list.push({
                             id,
                             shortcode: code,
-                            display_url: (_f = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _f === void 0 ? void 0 : _f.url,
+                            display_url: (_k = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _k === void 0 ? void 0 : _k.url,
                             is_video: false,
-                            url: (_g = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _g === void 0 ? void 0 : _g.url,
+                            url: (_l = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _l === void 0 ? void 0 : _l.url,
                             type: "jpg",
                             typename: "image"
                         });
@@ -132,9 +160,9 @@ class Parser {
                     case 2: //video 
                         list.push({
                             id, shortcode: code,
-                            display_url: (_h = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _h === void 0 ? void 0 : _h.url,
+                            display_url: (_m = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _m === void 0 ? void 0 : _m.url,
                             is_video: true,
-                            url: (_j = video_versions[0]) === null || _j === void 0 ? void 0 : _j.url,
+                            url: (_o = video_versions[0]) === null || _o === void 0 ? void 0 : _o.url,
                             type: "mp4",
                             typename: "video"
                         });

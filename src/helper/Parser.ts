@@ -3,6 +3,7 @@ import { Parser as ParserInterface } from 'parser'
 import { InsLinkType } from '../enum/enum.handler'
 import { InsJsonDataType } from '../../typings'
 import Looper from './Looper'
+import { checkServerIdentity } from 'tls'
 
 class Parser implements ParserInterface { 
 
@@ -112,9 +113,40 @@ class Parser implements ParserInterface {
             }else if(items) {
                 const {id,code,caption,user,carousel_media} = items 
                 const is_multiple = carousel_media?.length > 1   
-                const list = []   
-                for(let eachCm of carousel_media) {
-                    const {id,media_type,image_versions2,video_versions} = eachCm 
+                
+                const list = []    
+
+                if(is_multiple) {
+                    for(let eachCm of carousel_media) {
+                        const {id,media_type,image_versions2,video_versions} = eachCm 
+                        switch (media_type)  {
+                            case 1: //image  
+                                list.push({
+                                    id,
+                                    shortcode:code,
+                                    display_url:image_versions2?.candidates[0]?.url, 
+                                    is_video:false,
+                                    url:image_versions2?.candidates[0]?.url,
+                                    type:"jpg",
+                                    typename:"image"
+                                })
+                                break
+                            case 2 : //video 
+                                list.push({
+                                    id,shortcode:code,
+                                    display_url : image_versions2?.candidates[0]?.url ,
+                                    is_video : true ,
+                                    url: video_versions[0]?.url,
+                                    type:"mp4",
+                                    typename:"video"
+                                })
+    
+                                break    
+                        }
+                        
+                    }
+                }else{ 
+                    const {image_versions2,video_versions,media_type} = items  
                     switch (media_type)  {
                         case 1: //image  
                             list.push({
@@ -139,9 +171,9 @@ class Parser implements ParserInterface {
 
                             break    
                     }
-                    
+                  
                 }
-
+                
                 insJsonData = {
                     id,
                     shortcode:code,
@@ -156,7 +188,7 @@ class Parser implements ParserInterface {
                     list,
                     version:2
                 }
-                
+ 
             }
            
             return  insJsonData
