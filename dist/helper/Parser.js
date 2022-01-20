@@ -56,22 +56,36 @@ class Parser {
     * @param json
     */
     linkJsonParser(json) {
-        var _a, _b, _c, _d, _e;
-        debugger;
+        var _a, _b, _c, _d, _e, _f, _g, _h, _j;
         const shortcode_media = (_a = json === null || json === void 0 ? void 0 : json.graphql) === null || _a === void 0 ? void 0 : _a.shortcode_media;
-        if (!shortcode_media)
+        const items = json === null || json === void 0 ? void 0 : json.items[0];
+        if (!shortcode_media && !items)
             return;
         let insJsonData;
-        const { id, shortcode, edge_media_to_caption, owner, edge_sidecar_to_children } = shortcode_media;
-        const caption = ((_b = edge_media_to_caption === null || edge_media_to_caption === void 0 ? void 0 : edge_media_to_caption.edges) === null || _b === void 0 ? void 0 : _b.length) > 0 ?
-            (_d = (_c = edge_media_to_caption.edges[0]) === null || _c === void 0 ? void 0 : _c.node) === null || _d === void 0 ? void 0 : _d.text
-            : '';
-        const is_multiple = ((_e = edge_sidecar_to_children === null || edge_sidecar_to_children === void 0 ? void 0 : edge_sidecar_to_children.edges) === null || _e === void 0 ? void 0 : _e.length) > 1;
-        const list = [];
-        if (is_multiple) {
-            for (let node of edge_sidecar_to_children.edges) {
-                node = node.node;
-                const { id, shortcode, display_url, is_video, video_url } = node;
+        if (shortcode_media) {
+            const { id, shortcode, edge_media_to_caption, owner, edge_sidecar_to_children } = shortcode_media;
+            const caption = ((_b = edge_media_to_caption === null || edge_media_to_caption === void 0 ? void 0 : edge_media_to_caption.edges) === null || _b === void 0 ? void 0 : _b.length) > 0 ?
+                (_d = (_c = edge_media_to_caption.edges[0]) === null || _c === void 0 ? void 0 : _c.node) === null || _d === void 0 ? void 0 : _d.text
+                : '';
+            const is_multiple = ((_e = edge_sidecar_to_children === null || edge_sidecar_to_children === void 0 ? void 0 : edge_sidecar_to_children.edges) === null || _e === void 0 ? void 0 : _e.length) > 1;
+            const list = [];
+            if (is_multiple) {
+                for (let node of edge_sidecar_to_children.edges) {
+                    node = node.node;
+                    const { id, shortcode, display_url, is_video, video_url } = node;
+                    list.push({
+                        id,
+                        shortcode,
+                        display_url,
+                        is_video,
+                        url: is_video ? video_url : display_url,
+                        type: is_video ? 'mp4' : 'jpg',
+                        typename: is_video ? 'video' : 'image'
+                    });
+                }
+            }
+            else {
+                const { display_url, is_video, video_url } = shortcode_media;
                 list.push({
                     id,
                     shortcode,
@@ -82,32 +96,66 @@ class Parser {
                     typename: is_video ? 'video' : 'image'
                 });
             }
-        }
-        else {
-            const { display_url, is_video, video_url } = shortcode_media;
-            list.push({
+            insJsonData = {
                 id,
                 shortcode,
-                display_url,
-                is_video,
-                url: is_video ? video_url : display_url,
-                type: is_video ? 'mp4' : 'jpg',
-                typename: is_video ? 'video' : 'image'
-            });
+                caption,
+                owner: {
+                    id: owner.id,
+                    profile_pic_url: owner.profile_pic_url,
+                    username: owner.username,
+                    full_name: owner.full_name
+                },
+                is_multiple,
+                list,
+                version: 1
+            };
         }
-        insJsonData = {
-            id,
-            shortcode,
-            caption,
-            owner: {
-                id: owner.id,
-                profile_pic_url: owner.profile_pic_url,
-                username: owner.username,
-                full_name: owner.full_name
-            },
-            is_multiple,
-            list
-        };
+        else if (items) {
+            const { id, code, caption, user, carousel_media } = items;
+            const is_multiple = (carousel_media === null || carousel_media === void 0 ? void 0 : carousel_media.length) > 1;
+            const list = [];
+            for (let eachCm of carousel_media) {
+                const { id, media_type, image_versions2, video_versions } = eachCm;
+                switch (media_type) {
+                    case 1: //image  
+                        list.push({
+                            id,
+                            shortcode: code,
+                            display_url: (_f = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _f === void 0 ? void 0 : _f.url,
+                            is_video: false,
+                            url: (_g = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _g === void 0 ? void 0 : _g.url,
+                            type: "jpg",
+                            typename: "image"
+                        });
+                        break;
+                    case 2: //video 
+                        list.push({
+                            id, shortcode: code,
+                            display_url: (_h = image_versions2 === null || image_versions2 === void 0 ? void 0 : image_versions2.candidates[0]) === null || _h === void 0 ? void 0 : _h.url,
+                            is_video: true,
+                            url: (_j = video_versions[0]) === null || _j === void 0 ? void 0 : _j.url,
+                            type: "mp4",
+                            typename: "video"
+                        });
+                        break;
+                }
+            }
+            insJsonData = {
+                id,
+                shortcode: code,
+                caption: caption === null || caption === void 0 ? void 0 : caption.text,
+                owner: {
+                    id: user === null || user === void 0 ? void 0 : user.pk,
+                    profile_pic_url: user === null || user === void 0 ? void 0 : user.profile_pic_url,
+                    username: user === null || user === void 0 ? void 0 : user.username,
+                    full_name: user === null || user === void 0 ? void 0 : user.full_name
+                },
+                is_multiple,
+                list,
+                version: 2
+            };
+        }
         return insJsonData;
     }
 }

@@ -164,10 +164,14 @@ class Looper implements Loop {
         this.config.cookies = (await this.config.getCookie())  
         info(`自动添加获取到的cookies:${JSON.stringify(this.config.cookies)}`) 
     }
-    
-
-  
+      
 }
 
 
-export = Looper
+export = Looper 
+
+
+
+
+
+

@@ -71,8 +71,8 @@ declare namespace InsKeeper {
             is_video:boolean,
             type:string,
             typename:string
-        }[]
-        
+        }[],
+        version?:number //区别那种解析格式
     }
     
     

@@ -2,7 +2,7 @@ src/
 .vscode/
 examples/
 resources/
-__test__/
+__tests__/
 tsconfig.json
 yarn.lock
 

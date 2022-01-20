@@ -179,7 +179,8 @@ InsSaver.title = title
 InsSaver.log = log 
 InsSaver.createUrl = createUrl
 InsSaver.createTvUrl= createTvUrl 
-InsSaver.getShortCode = getShortCode
+InsSaver.getShortCode = getShortCode 
+
 export = InsSaver 
 
 
