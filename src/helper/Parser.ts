@@ -55,7 +55,7 @@ class Parser implements ParserInterface {
      private linkJsonParser(json:{[k:string|number|symbol]:any}): InsJsonDataType{  
             
             const shortcode_media = json?.graphql?.shortcode_media   
-            const items = json?.items[0] 
+            const items = json.items ?  json.items[0] : null 
             
             if(!shortcode_media && !items) return   
             

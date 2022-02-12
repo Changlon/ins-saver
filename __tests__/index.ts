@@ -6,7 +6,7 @@ import InsSaver from '../src/index'
 describe("Class InsSaver",()=>{
     
     const saver =  new InsSaver({
-        getCookie:async ()=>["csrftoken=iMbrvbsJX9lczAHzPSSyDPGiVxVr92fg;mid=YYhmrAABAAFaDeSzKGfQGaQZSTAz;ig_nrcb=1;rur=CLN,51605286108,1674123225:01f791dd0acc5cf5f4dd0028372d24f052bc52e605d2b60923bc52385a8d598b2b61d654;ds_user_id=51605286108;ig_did=1F372D0F-BB8F-4B78-8FD5-03E52F825EDA;sessionid=51605286108%3AU3zjGdGmIBZeB1%3A14;"],
+        getCookie:async ()=>["mid=Yfo1dQALAAHl-ZixhGXTxOTmiGVX;ig_did=21813403-1968-4957-A18D-E8ECF5329C8C;ig_nrcb=1;csrftoken=dubg4aR6VzlezylV7U8A6xDnC0TJ8rUT;ds_user_id=51675573945;sessionid=51675573945%3AKgn5PeHkOnjdvJ%3A21;rur=NAO,51675573945,1675973170:01f784c061bfb5b6aff7cee345d5583da0b5632049a4311a092f7c0533fcec250c13a3f8;"],
         downloadPath:"D:\\CodeFiles\\workplace\\ins\\ins-saver\\resources\\" ,
         proxy:"http://127.0.0.1:1080" //you can remove this option if you in the outside network or do not use the proxy 
     })
@@ -21,7 +21,7 @@ describe("Class InsSaver",()=>{
     }) 
  
     it("download of instance from Class InsSaver",done=>{
-        saver.download("https://qiniu.ujnhand.com/ins/145322388_prem_space_avatar_1639922223585.jpg","test")
+        saver.download("https://scontent-hkt1-1.cdninstagram.com/v/t51.2885-19/s150x150/271346579_227318226236682_4454977645743228796_n.jpg?_nc_ht=scontent-hkt1-1.cdninstagram.com&_nc_cat=1&_nc_ohc=ZsyU39te70cAX8Ww3LR&edm=AABBvjUBAAAA&ccb=7-4&oh=00_AT8otA2Fk41rkC_m1kbx1ZayYBW6yK6lo-C5RmXiwHYlFQ&oe=61E53251&_nc_sid=83d603","test")
              .then(data=>{ 
                  expect(data).toBeInstanceOf(Object) 
                  done()
@@ -29,7 +29,8 @@ describe("Class InsSaver",()=>{
     })
 
     it("expect the analysisXXX function return the right data",done=>{
-        saver.analysisPost("https://www.instagram.com/p/CW0l-MRJEbr/?utm_medium=copy_link",async data=>{ 
+        saver.analysisPost("https://www.instagram.com/p/CSBUwGmB8mF/?utm_medium",async data=>{  
+            console.log(data)
             expect(data.version === 1 || data.version === 2).toBe(true)
             done()
         })

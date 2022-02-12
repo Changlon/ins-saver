@@ -4,7 +4,7 @@ import InsSaver from '../src'
 const config :InsKeeperConfig = {
     getCookie:async function (): Promise<CookieType[]> {
        return [
-          "csrftoken=F1eFKC9tBNdinM1zB24XNNDT6tEClXux;mid=YYhmrwABAAGAA-s9TgLGt-twGPUA;ig_nrcb=1;rur=FRC,51080639397,1674124552:01f7a64e7d59f7bed18d336c2243e8a4c7e7e5c23613a4ed6a4bc0757a96c5f886cfd1cc;ds_user_id=51080639397;ig_did=7B5C1854-44F1-4EB5-A011-49D76053C8CE;sessionid=51080639397%3AsXo81EOkFJ1w9e%3A1;"
+          "mid=Yfo1dQALAAHl-ZixhGXTxOTmiGVX;ig_did=21813403-1968-4957-A18D-E8ECF5329C8C;ig_nrcb=1;csrftoken=dubg4aR6VzlezylV7U8A6xDnC0TJ8rUT;ds_user_id=51675573945;sessionid=51675573945%3AKgn5PeHkOnjdvJ%3A21;rur=NAO,51675573945,1675973170:01f784c061bfb5b6aff7cee345d5583da0b5632049a4311a092f7c0533fcec250c13a3f8;"
        ]
     },
     downloadPath: "D:\\CodeFiles\\workplace\\ins\\ins-saver\\resources\\",
@@ -15,6 +15,6 @@ const config :InsKeeperConfig = {
 
 const saver = new InsSaver(config) 
 
-saver.analysisPost("https://www.instagram.com/tv/CY6u8bwreJE/?utm_medium=copy_link",async (data)=>{ 
+saver.analysisPost("https://www.instagram.com/p/CSBUwGmB8mF/?utm_medium",async (data)=>{ 
     console.log(data)
 }) 
