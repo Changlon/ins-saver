@@ -58,7 +58,7 @@ class Parser {
     linkJsonParser(json) {
         var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o;
         const shortcode_media = (_a = json === null || json === void 0 ? void 0 : json.graphql) === null || _a === void 0 ? void 0 : _a.shortcode_media;
-        const items = json === null || json === void 0 ? void 0 : json.items[0];
+        const items = json.items ? json.items[0] : null;
         if (!shortcode_media && !items)
             return;
         let insJsonData;
