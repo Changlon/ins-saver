@@ -18,13 +18,14 @@ const config :InsKeeperConfig = {
 
 try {
     new Looper(config,new Event.EventEmitter())
-    .getJsonData("https://www.instagram.com/p/CWmVITVvM0R/?__a=1")  
+    .getJsonData("https://www.instagram.com/p/CWmVITVvM0R/")  
     .then(r=>{
         console.log(r)
     })
     .catch(e=>{
         console.log(e)
     })
+    
 }catch(e) {
     console.log(e)
 
